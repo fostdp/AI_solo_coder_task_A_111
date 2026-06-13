@@ -34,6 +34,24 @@ public class DamagePrediction {
     @Column(name = "paris_m", nullable = false, precision = 10, scale = 4)
     private BigDecimal parisM;
 
+    @Column(name = "paris_c_posterior_mean", precision = 18, scale = 12)
+    private BigDecimal parisCPosteriorMean;
+
+    @Column(name = "paris_c_posterior_std", precision = 18, scale = 12)
+    private BigDecimal parisCPosteriorStd;
+
+    @Column(name = "paris_m_posterior_mean", precision = 10, scale = 6)
+    private BigDecimal parisMPosteriorMean;
+
+    @Column(name = "paris_m_posterior_std", precision = 10, scale = 6)
+    private BigDecimal parisMPosteriorStd;
+
+    @Column(name = "mcmc_samples")
+    private Integer mcmcSamples;
+
+    @Column(name = "is_bayesian")
+    private Boolean isBayesian;
+
     @Column(name = "prediction_data", nullable = false, columnDefinition = "jsonb")
     @JdbcTypeCode(SqlTypes.JSON)
     private List<YearPrediction> predictionData;
