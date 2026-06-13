@@ -42,10 +42,10 @@ public class BayesianParisCalibrator {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class CalibrationResult {
-        double C_post_mean;
-        double C_post_std;
-        double M_post_mean;
-        double M_post_std;
+        double cPostMean;
+        double cPostStd;
+        double mPostMean;
+        double mPostStd;
         int samples;
     }
 
