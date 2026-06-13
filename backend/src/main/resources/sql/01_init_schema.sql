@@ -81,6 +81,62 @@ SELECT add_retention_policy(
     if_not_exists => TRUE
 );
 
+-- =============================================
+-- 3.1 原生压缩策略 (Native Compression)
+-- =============================================
+
+-- 启用超表原生压缩
+ALTER TABLE sensor_data SET (
+    timescaledb.compress,
+    timescaledb.compress_segmentby = 'bridge_id, sensor_id',
+    timescaledb.compress_orderby = 'timestamp DESC'
+);
+
+-- 添加自动压缩策略：超过3个月的数据自动压缩
+SELECT add_compression_policy(
+    'sensor_data',
+    INTERVAL '3 months',
+    if_not_exists => TRUE
+);
+
+-- 为连续聚合视图启用压缩
+ALTER MATERIALIZED VIEW sensor_data_hourly SET (
+    timescaledb.compress,
+    timescaledb.compress_segmentby = 'bridge_id, sensor_id',
+    timescaledb.compress_orderby = 'bucket DESC'
+);
+
+ALTER MATERIALIZED VIEW sensor_data_daily SET (
+    timescaledb.compress,
+    timescaledb.compress_segmentby = 'bridge_id, sensor_id',
+    timescaledb.compress_orderby = 'bucket DESC'
+);
+
+ALTER MATERIALIZED VIEW sensor_data_monthly SET (
+    timescaledb.compress,
+    timescaledb.compress_segmentby = 'bridge_id, sensor_id',
+    timescaledb.compress_orderby = 'bucket DESC'
+);
+
+-- 添加连续聚合压缩策略：超过1个月的聚合数据自动压缩
+SELECT add_compression_policy(
+    'sensor_data_hourly',
+    INTERVAL '1 month',
+    if_not_exists => TRUE
+);
+
+SELECT add_compression_policy(
+    'sensor_data_daily',
+    INTERVAL '1 month',
+    if_not_exists => TRUE
+);
+
+SELECT add_compression_policy(
+    'sensor_data_monthly',
+    INTERVAL '1 month',
+    if_not_exists => TRUE
+);
+
 -- 索引
 CREATE INDEX IF NOT EXISTS idx_sensor_data_bridge_sensor_time 
     ON sensor_data(bridge_id, sensor_id, timestamp DESC);
