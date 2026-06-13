@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS sensor (
     id BIGSERIAL PRIMARY KEY,
     bridge_id BIGINT NOT NULL REFERENCES bridge(id) ON DELETE CASCADE,
     code VARCHAR(50) NOT NULL UNIQUE,
+    name VARCHAR(100),
     type VARCHAR(30) NOT NULL,
     loc_x DECIMAL(12, 6) NOT NULL,
     loc_y DECIMAL(12, 6) NOT NULL,
@@ -173,6 +174,12 @@ CREATE TABLE IF NOT EXISTS fem_result (
     max_stress DECIMAL(18, 8) NOT NULL,
     max_strain DECIMAL(18, 8) NOT NULL,
     safety_factor DECIMAL(10, 4) NOT NULL,
+    mc_samples INTEGER,
+    stress_p95 DECIMAL(18, 8),
+    stress_p99 DECIMAL(18, 8),
+    pf_failure DECIMAL(12, 10),
+    modulus_cov DECIMAL(8, 4),
+    is_stochastic BOOLEAN DEFAULT FALSE,
     calculated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -186,6 +193,12 @@ CREATE TABLE IF NOT EXISTS damage_prediction (
     initial_length DECIMAL(12, 6) NOT NULL,
     paris_c DECIMAL(18, 12) NOT NULL,
     paris_m DECIMAL(10, 4) NOT NULL,
+    paris_c_posterior_mean DECIMAL(18, 12),
+    paris_c_posterior_std DECIMAL(18, 12),
+    paris_m_posterior_mean DECIMAL(10, 6),
+    paris_m_posterior_std DECIMAL(10, 6),
+    mcmc_samples INTEGER,
+    is_bayesian BOOLEAN DEFAULT FALSE,
     prediction_data JSONB NOT NULL,
     maintenance_year INTEGER,
     recommendation TEXT,
