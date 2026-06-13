@@ -1,0 +1,119 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: bridge-monitor
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/bridge_monitor
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        jdbc:
+          batch_size: 50
+        order_inserts: true
+        order_updates: true
+    open-in-view: false
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+    serialization:
+      write-dates-as-timestamps: false
+
+# MQTT Configuration for Alert Push
+mqtt:
+  broker:
+    url: tcp://localhost:1883
+    client-id: bridge-monitor-alert
+    username: admin
+    password: public
+    connection-timeout: 30
+    keep-alive-interval: 60
+    auto-reconnect: true
+    clean-session: true
+  topic:
+    alert: heritage/bridge/alert
+    data-in: heritage/bridge/data/+
+
+# Alert Thresholds (overridable via database)
+alert:
+  thresholds:
+    settlement-warning: 5.0
+    settlement-danger: 10.0
+    crack-rate-warning: 0.5
+    crack-rate-danger: 1.0
+    strain-warning: 100.0
+    strain-danger: 150.0
+    temp-rate-warning: 5.0
+    temp-rate-danger: 8.0
+
+# FEM Simulation Defaults
+simulation:
+  fem:
+    default-element-count: 20
+    default-node-count: 21
+    gravity-acceleration: 9.81
+    stone-density: 2500.0
+    traffic-load: 30000.0
+    temperature-delta: 25.0
+
+# Damage Prediction Defaults
+damage:
+  prediction:
+    paris-c-default: 1.0e-12
+    paris-m-default: 3.0
+    years-to-predict: 5
+    annual-temperature-cycles: 365
+    critical-crack-length: 20.0
+    maintenance-threshold: 10.0
+
+# Logging
+logging:
+  level:
+    root: INFO
+    com.heritage.bridge: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/bridge-monitor.log
+    max-size: 10MB
+    max-history: 30
+
+# Actuator (optional)
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+
+# CORS Configuration
+cors:
+  allowed-origins: "http://localhost:3000,http://localhost:5173"
+  allowed-methods: "GET,POST,PUT,DELETE,OPTIONS"
+  allowed-headers: "*"
+  allow-credentials: true
+  max-age: 3600
