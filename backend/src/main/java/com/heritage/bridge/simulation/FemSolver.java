@@ -64,6 +64,11 @@ public class FemSolver {
         double stressP95;
         double stressP99;
         double pfFailure;
+        boolean stochastic;
+        int mcSamples;
+        double modulusCov;
+
+        public boolean isStochasticCheck() { return stochastic; }
     }
 
     public Result solve(Bridge bridge, SolverParams p) {
@@ -76,7 +81,11 @@ public class FemSolver {
         double I = Math.pow(t, 3) / 12.0;
 
         if (!p.isStochastic()) {
-            return solveOnce(bridge, p, n, nodeCount, L, f, t, A, I, p.getEmean(), p.getStoneStrength());
+            Result r = solveOnce(bridge, p, n, nodeCount, L, f, t, A, I, p.getEmean(), p.getStoneStrength());
+            r.setStochastic(false);
+            r.setMcSamples(0);
+            r.setModulusCov(0);
+            return r;
         }
 
         NormalDistribution modDist = new NormalDistribution(p.getEmean(), p.getEmean() * p.getModulusCov());
@@ -111,6 +120,9 @@ public class FemSolver {
         r.setStressP95(p95);
         r.setStressP99(p99);
         r.setPfFailure(pf);
+        r.setStochastic(true);
+        r.setMcSamples(samples);
+        r.setModulusCov(p.getModulusCov());
         return r;
     }
 
