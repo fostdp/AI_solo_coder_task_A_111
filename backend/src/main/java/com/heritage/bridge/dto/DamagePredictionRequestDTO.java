@@ -25,4 +25,18 @@ public class DamagePredictionRequestDTO {
     private BigDecimal stressAmplitude;
 
     private Integer annualCycles;
+
+    private Boolean enableBayesian;
+
+    private Integer mcmcSamples;
+
+    private Integer mcmcBurnin;
+
+    private BigDecimal priorC_mean;
+
+    private BigDecimal priorC_std;
+
+    private BigDecimal priorM_mean;
+
+    private BigDecimal priorM_std;
 }
