@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "three": "^0.160.0",
-    "three-mesh-lod": "^1.0.0",
     "echarts": "^5.4.3",
     "axios": "^1.6.0",
     "vue": "^3.3.8",
