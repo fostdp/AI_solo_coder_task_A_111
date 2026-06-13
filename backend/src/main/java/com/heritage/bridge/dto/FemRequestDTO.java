@@ -18,4 +18,12 @@ public class FemRequestDTO {
     private BigDecimal temperatureDelta;
 
     private Integer elementCount;
+
+    private Integer monteCarloSamples;
+
+    private BigDecimal modulusCov;
+
+    private BigDecimal strengthCov;
+
+    private Boolean enableStochastic;
 }
