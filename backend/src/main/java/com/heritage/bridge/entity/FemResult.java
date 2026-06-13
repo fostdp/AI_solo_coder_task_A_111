@@ -38,6 +38,24 @@ public class FemResult {
     @Column(name = "safety_factor", nullable = false, precision = 10, scale = 4)
     private BigDecimal safetyFactor;
 
+    @Column(name = "mc_samples")
+    private Integer mcSamples;
+
+    @Column(name = "stress_p95", precision = 18, scale = 8)
+    private BigDecimal stressP95;
+
+    @Column(name = "stress_p99", precision = 18, scale = 8)
+    private BigDecimal stressP99;
+
+    @Column(name = "pf_failure", precision = 12, scale = 10)
+    private BigDecimal pfFailure;
+
+    @Column(name = "modulus_cov", precision = 8, scale = 4)
+    private BigDecimal modulusCov;
+
+    @Column(name = "is_stochastic")
+    private Boolean isStochastic;
+
     @CreationTimestamp
     @Column(name = "calculated_at", updatable = false)
     private LocalDateTime calculatedAt;
