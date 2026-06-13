@@ -24,6 +24,9 @@ public class Sensor {
     @Column(nullable = false, length = 50, unique = true)
     private String code;
 
+    @Column(length = 100)
+    private String name;
+
     @Column(nullable = false, length = 30)
     private String type;
 
