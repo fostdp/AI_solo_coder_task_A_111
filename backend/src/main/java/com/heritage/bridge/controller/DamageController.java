@@ -2,28 +2,36 @@ package com.heritage.bridge.controller;
 
 import com.heritage.bridge.dto.ApiResponse;
 import com.heritage.bridge.dto.DamagePredictionRequestDTO;
+import com.heritage.bridge.damage.DamagePredictorService;
 import com.heritage.bridge.entity.DamagePrediction;
-import com.heritage.bridge.service.DamagePredictionService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/damage")
-@Validated
 @RequiredArgsConstructor
 public class DamageController {
 
-    private final DamagePredictionService damagePredictionService;
+    private final DamagePredictorService damagePredictorService;
 
     @PostMapping("/calculate")
-    public ResponseEntity<ApiResponse<DamagePrediction>> calculate(@RequestBody DamagePredictionRequestDTO dto) {
-        return ResponseEntity.ok(ApiResponse.success(damagePredictionService.calculate(dto)));
+    public ApiResponse<DamagePrediction> calculate(@Valid @RequestBody DamagePredictionRequestDTO dto) {
+        DamagePrediction result = damagePredictorService.calculateOnDemand(dto);
+        return ApiResponse.success(result);
     }
 
-    @GetMapping("/predict/{bridgeId}")
-    public ResponseEntity<ApiResponse<DamagePrediction>> latestPrediction(@PathVariable Long bridgeId) {
-        return ResponseEntity.ok(ApiResponse.success(damagePredictionService.findLatestByBridgeId(bridgeId)));
+    @GetMapping("/list")
+    public ApiResponse<List<DamagePrediction>> listPredictions(
+            @RequestParam Long bridgeId,
+            @RequestParam(defaultValue = "20") int limit) {
+        return ApiResponse.success(damagePredictorService.listByBridge(bridgeId, limit));
+    }
+
+    @GetMapping("/latest/{bridgeId}")
+    public ApiResponse<DamagePrediction> getLatest(@PathVariable Long bridgeId) {
+        return ApiResponse.success(damagePredictorService.getLatest(bridgeId).orElse(null));
     }
 }
