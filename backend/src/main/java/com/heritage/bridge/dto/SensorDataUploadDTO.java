@@ -12,7 +12,6 @@ public class SensorDataUploadDTO {
     @NotNull(message = "传感器编码不能为空")
     private String sensorCode;
 
-    @NotNull(message = "桥梁ID不能为空")
     private Long bridgeId;
 
     @NotNull(message = "监测值不能为空")
