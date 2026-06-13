@@ -35,11 +35,10 @@ public interface SensorDataRepository extends JpaRepository<SensorData, SensorDa
             @Param("startTime") LocalDateTime startTime);
 
     @Query(value = "SELECT * FROM sensor_data_daily " +
-                   "WHERE bridge_id = :bridgeId AND sensor_id = :sensorId " +
+                   "WHERE sensor_id = :sensorId " +
                    "AND bucket >= :startTime ORDER BY bucket ASC",
            nativeQuery = true)
-    List<Object[]> findDailyTrendData(
-            @Param("bridgeId") Long bridgeId,
+    List<Object[]> findDailyTrendDataBySensorId(
             @Param("sensorId") Long sensorId,
             @Param("startTime") LocalDateTime startTime);
 
