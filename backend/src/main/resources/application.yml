@@ -49,7 +49,11 @@ mqtt:
     connection-timeout: 30
     keep-alive-interval: 60
     auto-reconnect: true
-    clean-session: true
+    clean-session: false
+    qos: 1
+    message-retry-interval: 5000
+    max-inflight: 20
+    persistence-dir: ./mqtt-persistence
   topic:
     alert: heritage/bridge/alert
     data-in: heritage/bridge/data/+
@@ -75,6 +79,9 @@ simulation:
     stone-density: 2500.0
     traffic-load: 30000.0
     temperature-delta: 25.0
+    default-mc-samples: 1000
+    default-modulus-cov: 0.15
+    default-strength-cov: 0.20
 
 # Damage Prediction Defaults
 damage:
@@ -85,6 +92,12 @@ damage:
     annual-temperature-cycles: 365
     critical-crack-length: 20.0
     maintenance-threshold: 10.0
+    bayesian-mcmc-samples: 10000
+    bayesian-mcmc-burnin: 2000
+    prior-c-mean: 1.0e-12
+    prior-c-std: 5.0e-13
+    prior-m-mean: 3.0
+    prior-m-std: 0.5
 
 # Logging
 logging:
