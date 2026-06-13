@@ -151,10 +151,17 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info,metrics
+        include: health,info,metrics,prometheus
   endpoint:
     health:
       show-details: always
+    metrics:
+      export:
+        prometheus:
+          enabled: true
+          step: 10s
+      tags:
+        application: bridge-monitor
 
 cors:
   allowed-origins: "http://localhost:3000,http://localhost:5173"
