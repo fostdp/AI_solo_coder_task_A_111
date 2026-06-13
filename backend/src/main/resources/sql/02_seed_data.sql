@@ -35,43 +35,43 @@ BEGIN
         b_id := bridge_record.id;
         -- 应变传感器1: 拱顶
         sensor_code := 'STRAIN-' || b_id || '-01';
-        INSERT INTO sensor (bridge_id, code, type, loc_x, loc_y, loc_z, position, threshold, unit)
-        VALUES (b_id, sensor_code, 'strain', 0, bridge_record.span_length * 0.204, bridge_record.span_length / 2, '主拱拱顶', 150.0, '微应变')
+        INSERT INTO sensor (bridge_id, code, name, type, loc_x, loc_y, loc_z, position, threshold, unit)
+        VALUES (b_id, sensor_code, '拱顶应变计', 'strain', 0, bridge_record.span_length * 0.204, bridge_record.span_length / 2, '主拱拱顶', 150.0, '微应变')
         ON CONFLICT (code) DO NOTHING;
 
         -- 应变传感器2: 左拱脚
-        INSERT INTO sensor (bridge_id, code, type, loc_x, loc_y, loc_z, position, threshold, unit)
-        VALUES (b_id, 'STRAIN-' || b_id || '-02', 'strain', 0, 0, 0, '左拱脚', 150.0, '微应变')
+        INSERT INTO sensor (bridge_id, code, name, type, loc_x, loc_y, loc_z, position, threshold, unit)
+        VALUES (b_id, 'STRAIN-' || b_id || '-02', '左拱脚应变计', 'strain', 0, 0, 0, '左拱脚', 150.0, '微应变')
         ON CONFLICT (code) DO NOTHING;
 
         -- 应变传感器3: 右拱脚
-        INSERT INTO sensor (bridge_id, code, type, loc_x, loc_y, loc_z, position, threshold, unit)
-        VALUES (b_id, 'STRAIN-' || b_id || '-03', 'strain', 0, 0, bridge_record.span_length, '右拱脚', 150.0, '微应变')
+        INSERT INTO sensor (bridge_id, code, name, type, loc_x, loc_y, loc_z, position, threshold, unit)
+        VALUES (b_id, 'STRAIN-' || b_id || '-03', '右拱脚应变计', 'strain', 0, 0, bridge_record.span_length, '右拱脚', 150.0, '微应变')
         ON CONFLICT (code) DO NOTHING;
 
         -- 应变传感器4: 左1/4跨
-        INSERT INTO sensor (bridge_id, code, type, loc_x, loc_y, loc_z, position, threshold, unit)
-        VALUES (b_id, 'STRAIN-' || b_id || '-04', 'strain', 0, bridge_record.span_length * 0.204 * 0.75, bridge_record.span_length * 0.25, '左1/4跨拱肋', 120.0, '微应变')
+        INSERT INTO sensor (bridge_id, code, name, type, loc_x, loc_y, loc_z, position, threshold, unit)
+        VALUES (b_id, 'STRAIN-' || b_id || '-04', '左1/4跨应变计', 'strain', 0, bridge_record.span_length * 0.204 * 0.75, bridge_record.span_length * 0.25, '左1/4跨拱肋', 120.0, '微应变')
         ON CONFLICT (code) DO NOTHING;
 
         -- 位移传感器1: 左桥墩沉降
-        INSERT INTO sensor (bridge_id, code, type, loc_x, loc_y, loc_z, position, threshold, unit)
-        VALUES (b_id, 'DISP-' || b_id || '-01', 'displacement', -1.0, 0, 0, '左桥墩沉降', 10.0, 'mm')
+        INSERT INTO sensor (bridge_id, code, name, type, loc_x, loc_y, loc_z, position, threshold, unit)
+        VALUES (b_id, 'DISP-' || b_id || '-01', '左桥墩位移计', 'displacement', -1.0, 0, 0, '左桥墩沉降', 10.0, 'mm')
         ON CONFLICT (code) DO NOTHING;
 
         -- 位移传感器2: 右桥墩沉降
-        INSERT INTO sensor (bridge_id, code, type, loc_x, loc_y, loc_z, position, threshold, unit)
-        VALUES (b_id, 'DISP-' || b_id || '-02', 'displacement', -1.0, 0, bridge_record.span_length, '右桥墩沉降', 10.0, 'mm')
+        INSERT INTO sensor (bridge_id, code, name, type, loc_x, loc_y, loc_z, position, threshold, unit)
+        VALUES (b_id, 'DISP-' || b_id || '-02', '右桥墩位移计', 'displacement', -1.0, 0, bridge_record.span_length, '右桥墩沉降', 10.0, 'mm')
         ON CONFLICT (code) DO NOTHING;
 
         -- 裂缝传感器1: 拱顶裂缝
-        INSERT INTO sensor (bridge_id, code, type, loc_x, loc_y, loc_z, position, threshold, unit)
-        VALUES (b_id, 'CRACK-' || b_id || '-01', 'crack', 0, bridge_record.span_length * 0.204 + 0.1, bridge_record.span_length / 2, '拱顶纵向裂缝', 1.0, 'mm/月')
+        INSERT INTO sensor (bridge_id, code, name, type, loc_x, loc_y, loc_z, position, threshold, unit)
+        VALUES (b_id, 'CRACK-' || b_id || '-01', '拱顶裂缝计', 'crack', 0, bridge_record.span_length * 0.204 + 0.1, bridge_record.span_length / 2, '拱顶纵向裂缝', 1.0, 'mm/月')
         ON CONFLICT (code) DO NOTHING;
 
         -- 温度传感器1
-        INSERT INTO sensor (bridge_id, code, type, loc_x, loc_y, loc_z, position, threshold, unit)
-        VALUES (b_id, 'TEMP-' || b_id || '-01', 'temperature', 0, bridge_record.span_length * 0.204 / 2, bridge_record.span_length / 2, '桥身环境温度', 50.0, '℃')
+        INSERT INTO sensor (bridge_id, code, name, type, loc_x, loc_y, loc_z, position, threshold, unit)
+        VALUES (b_id, 'TEMP-' || b_id || '-01', '环境温度传感器', 'temperature', 0, bridge_record.span_length * 0.204 / 2, bridge_record.span_length / 2, '桥身环境温度', 50.0, '℃')
         ON CONFLICT (code) DO NOTHING;
     END LOOP;
 END $$;
